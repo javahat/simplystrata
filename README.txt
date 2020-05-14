@@ -91,6 +91,16 @@ Source: http://fontawesome.io/
 
 == Changelog ==
 
+= 1.2 =
+* Update: May 1, 2020
+*Added support for Council Only documents - National
+*Updated order of documents - All sites
+  * post-page-documents.php
+  * single.php
+  * post-documents.php
+  * content.php
+  * post-council-documents.php
+
 = 1.0 =
 * Released: February 7, 2018
 
