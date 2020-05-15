@@ -94,6 +94,7 @@ Source: http://fontawesome.io/
 = 2.1 = 
 * Update May 15, 2020
 * Added github support for future updates.
+* Not working, will try again.
 
 = 1.2 =
 * Update: May 1, 2020
