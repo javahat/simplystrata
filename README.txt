@@ -91,6 +91,10 @@ Source: http://fontawesome.io/
 
 == Changelog ==
 
+= 2.1 = 
+* Update May 15, 2020
+* Added github support for future updates.
+
 = 1.2 =
 * Update: May 1, 2020
 *Added support for Council Only documents - National
