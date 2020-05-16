@@ -38,24 +38,25 @@
 			<i class="fa left fa-user-circle-o aria-hidden='true'">
 			
 				<?php 
-				//if user is logged in to current blog
+				// determine if registered user is logged in to current blog
 				$current_user = get_current_user_id();
 				$current_blog = get_current_blog_id();
 				
-				//if user is not logged in to this blog
+				// if user is not logged in to this blog
 				if ( !is_user_logged_in() )
 					{
 					echo 'You must <a href="' . home_url() . '">log in</a> to view private information. ';
 					}
 				
+				// if user is registered but not logged into correct blog (required on multisite) 
 				elseif ( !is_user_member_of_blog($current_user, $current_blog) )
 					{
 					wp_logout();
 					echo 'You must <a href="' . home_url() . '">log in</a> with a valid username and password. ';
 					}
 								
-				elseif ( is_user_member_of_blog($current_user, $current_blog) )
-				//if ( is_user_logged_in() && )			 
+				// if user is registered for current blog
+				elseif ( is_user_member_of_blog($current_user, $current_blog) )		 
 					{
 					global $wp_roles;
 					$current_user = wp_get_current_user();
@@ -64,19 +65,19 @@
 					$current_role = array_shift( $roles );
 					$current_role = ucfirst($current_role);
 					$current_unit = preg_replace("/[^0-9,.]/", "", $current_user->user_login);
-					//$current_unit = $current_user->user_login;
 					
 					//Detect whether user is a unit number or not and display message
+					// if this blog does not have multi-users
 					if ($current_role == 'Owners') { echo 'Hello ' . $current_name; }
+					
+					// if this user does not have a unit number...
 					elseif (!preg_match("/[0-9]/i", $current_unit)) { 
 						echo 'Hello ' . $current_name . '. You are logged in as ' . $current_role . '. '; }
+					
+					// if this user has a unit number assigned...
 					else { echo 'Hello ' . $current_name . ' (' . $current_role . ' from unit ' . $current_unit . ') '; }
 					
-					//if ($current_role == 'Owner') { echo '<a href="' . get_edit_user_link() . '">Update Profile</a> '; }
-					
 					edit_post_link(' Edit this page');
-					//echo ' | <a href="' . wp_logout_url(get_permalink()) . '">Logout »</a>';
-				
 				}
 				?>
 			</i>
@@ -150,12 +151,10 @@
 							$recent_posts = wp_get_recent_posts( $args );
 							if (! $recent_posts ) { echo "Nothing posted in past 2 weeks."; } 
 							
-							foreach( $recent_posts as $recent ){
-								//$ss_post_date = get_the_date($recent["post_date"]);
-								//$ss_post_date2 = get_the_date($ss_post_date, 'y');
-		
+							foreach( $recent_posts as $recent )
+								{		
 								echo '<li><a href="' . get_permalink($recent["ID"]) . '">' .   $recent["post_title"].'</a></li> ';
-							}
+								}
 							
 						wp_reset_query();
 						echo "</ul></div>";
@@ -187,7 +186,6 @@
 				'container' => '', 
 				'menu_id' => 'menu', 
 				'menu_class' => '' ,
-				//'walker' => new Aria_Walker_Nav_Menu(),
 			) ); 
 			?>
 		</nav>

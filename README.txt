@@ -1,37 +1,18 @@
 === Simply Strata ===
-Contributors: JavaHat Solutions
-Requires at least: WordPress 4.7
-Version: 1.0
+Contributors: javahat
+Requires at least: 4.9
+Tested up to: 5.4.1
+Requires PHP: 7.2
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+A simple theme for strata councils to communicate important documents to building residents.
+
 Tags: one-column, two-columns, right-sidebar, left-sidebar, no-sidebar, accessibility-ready, custom-background, custom-colors, custom-header, custom-menu, editor-style, flexible-header, threaded-comments, translation-ready
 
 == Description ==
 
 Simply Strata is the perfect solution for Building Strata Councils to share information with residents. Rather than a blogging site, the focus is on sharing documents. Our goal is to only provide the necessary features. We have replaced 'blog posts' with 'document posts' for an easier interface. This theme features a widgetized area in the header to display important updates, as well as a background image, logo, and navigation.  Personalize this theme with a custom color scheme and organize your documents throughout the site based on document type. Our theme is designed for any abilities, any device and also works great in many languages.
-
-The theme includes the following template files:
-- index.php: default page with sidebar on the right
-- page-sidebar-left.php
-- page-no-sidebar.php
-  - header.php
-  - content.php: loop for page content
-  - content-home.php
-    - post-page-documents.php: documents assigned to a page
-    - post-minutes.php: all meeting minutes organized by year
-    - post-notices.php: important notices within the past month
-    - post-documents.php: archive of all documents other than minutes
-  - sidebar.php
-  - footer.php
-- functions.php
-  - admin.php: functions for admin use
-  - back-compat.php
-  - breadcrumbs.php
-  - customizer.php
-  - pages.php: adds core documents to template
-  - shortcodes.php
-  - widgets.php
 
 Widget Areas
 There are two widget areas:
@@ -55,14 +36,9 @@ Description: A webform builder with unparalleled ease of use and features.
 Source: https://wordpress.org/plugins/ninja-forms/
 
 
-
-
-Simply Strata Theme, Copyright 2018 JavaHat.com
-
-
 == Copyright ==
 
-Simply Strata Theme, Copyright 2018 JavaHat.com
+Simply Strata Theme, Copyright 2020 JavaHat.com
 Simply Strata is distributed under the terms of the GNU GPL
 
 This program is free software: you can redistribute it and/or modify
@@ -91,14 +67,9 @@ Source: http://fontawesome.io/
 
 == Changelog ==
 
-= 2.1 = 
-* Update May 15, 2020
-* Added github support for future updates.
-* Not working, will try again.
-
-= 1.2 =
+= 2.0 =
 * Update: May 1, 2020
-*Added support for Council Only documents - National
+*Added support for Council Only documents - requested by National
 *Updated order of documents - All sites
   * post-page-documents.php
   * single.php
