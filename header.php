@@ -122,12 +122,38 @@
 				<div class="sidebar-header"role="region" aria-label="Banner Sidebar">
 					<div id="sliding-note" <?php if ( is_front_page() ) { echo 'class="open"'; } elseif ( !is_front_page() ) { echo 'class="closed"'; } ?> >
 						<?php dynamic_sidebar( 'header-sidebar' ); 
-						if ( is_user_logged_in() )
+						if ( is_user_member_of_blog($current_user, $current_blog) )
 							{
-							$recent_posts = get_field('recent_posts'); 
-							$upcoming = get_field('upcoming'); 
-							if ( $recent_posts) { echo '<div class="sidebar-header-section"><h2 class="title">Recent Posts</h2><div class="textwidget">' . $recent_posts . '</div></div>'; }
-							if ( $upcoming ) { echo '<div class="sidebar-header-section"><h2 class="title">Upcoming</h2><div class="textwidget">' . $upcoming . '</div></div>'; }
+							echo "<div class='sidebar-header-section'><h2 class='title'>Latest Posts</h2><ul>";
+							$args = array( 'numberposts' => '5', 
+								// Using the date_query to filter posts from last week
+								'date_query' => array(
+									array(
+										'after' => '2 week ago',
+										'post_status' => 'published'
+									)
+								));
+							
+							$recent_posts = wp_get_recent_posts( $args );
+							if (! $recent_posts ) { echo "Nothing posted in past 2 weeks."; } 
+							
+							foreach( $recent_posts as $recent ){
+								//$ss_post_date = get_the_date($recent["post_date"]);
+								//$ss_post_date2 = get_the_date($ss_post_date, 'y');
+		
+								echo '<li><a href="' . get_permalink($recent["ID"]) . '">' .   $recent["post_title"].'</a></li> ';
+							}
+							
+						wp_reset_query();
+						echo "</ul></div>";
+						// End recent posts section
+							
+						// Display Upcoming Events
+						$upcoming = get_field('upcoming'); 
+							
+						if ( $upcoming ) 
+							{ 
+							echo '<div class="sidebar-header-section"><h2 class="title">Upcoming Events</h2><div class="textwidget">' . $upcoming . '</div></div>'; }
 							} 
 						?>
 					</div>
