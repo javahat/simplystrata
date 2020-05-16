@@ -38,24 +38,8 @@
 			<i class="fa left fa-user-circle-o aria-hidden='true'">
 			
 				<?php 
-				//if user is logged in to current blog
-				$current_user = get_current_user_id();
-				$current_blog = get_current_blog_id();
-				
-				//if user is not logged in to this blog
-				if ( !is_user_logged_in() )
-					{
-					echo 'You must <a href="' . home_url() . '">log in</a> to view private information. ';
-					}
-				
-				elseif ( !is_user_member_of_blog($current_user, $current_blog) )
-					{
-					wp_logout();
-					echo 'You must <a href="' . home_url() . '">log in</a> with a valid username and password. ';
-					}
-								
-				elseif ( is_user_member_of_blog($current_user, $current_blog) )
-				//if ( is_user_logged_in() && )			 
+				//if user is logged in
+				if ( is_user_logged_in() )			 
 					{
 					global $wp_roles;
 					$current_user = wp_get_current_user();
@@ -69,16 +53,19 @@
 					//Detect whether user is a unit number or not and display message
 					if ($current_role == 'Owners') { echo 'Hello ' . $current_name; }
 					elseif (!preg_match("/[0-9]/i", $current_unit)) { 
-						echo 'Hello ' . $current_name . '. You are logged in as ' . $current_role . '. '; }
+					echo 'Hello ' . $current_name . '. You are logged in as ' . $current_role . '. '; }
 					else { echo 'Hello ' . $current_name . ' (' . $current_role . ' from unit ' . $current_unit . ') '; }
 					
-					//if ($current_role == 'Owner') { echo '<a href="' . get_edit_user_link() . '">Update Profile</a> '; }
+					if ($current_role == 'Owner') { echo '<a href="' . get_edit_user_link() . '">Update Profile</a> '; }
 					
-					edit_post_link(' Edit this page');
-					//echo ' | <a href="' . wp_logout_url(get_permalink()) . '">Logout »</a>';
+					}
+						
+				//if user is not logged in
+				else { echo 'You must <a href="' . home_url() . '">log in</a> to view private information. '; }
 				
-				}
-				?>
+				edit_post_link(' Edit Content'); 
+				
+				if ( is_user_logged_in() ) { echo ' | <a href="' . wp_logout_url(get_permalink()) . '">Logout »</a>'; }?>
 			</i>
 			
 			<!-- display icon with date on right -->
@@ -135,42 +122,12 @@
 				<div class="sidebar-header"role="region" aria-label="Banner Sidebar">
 					<div id="sliding-note" <?php if ( is_front_page() ) { echo 'class="open"'; } elseif ( !is_front_page() ) { echo 'class="closed"'; } ?> >
 						<?php dynamic_sidebar( 'header-sidebar' ); 
-						if ( is_user_member_of_blog($current_user, $current_blog) )
+						if ( is_user_logged_in() )
 							{
-							
-							// UPDATED 2019-MAR-15
-							// Display all posts from past 2 weeks
-							// https:/wordpress.stackexchange.com/questions/99265/display-posts-of-the-last-7-days
-							echo "<div class='sidebar-header-section'><h2 class='title'>Latest Posts</h2><ul>";
-							$args = array( 'numberposts' => '5', 
-								// Using the date_query to filter posts from last week
-								'date_query' => array(
-									array(
-										'after' => '2 week ago',
-										'post_status' => 'published'
-									)
-								));
-							
-							$recent_posts = wp_get_recent_posts( $args );
-							if (! $recent_posts ) { echo "Nothing posted in past 2 weeks."; } 
-							
-							foreach( $recent_posts as $recent ){
-								//$ss_post_date = get_the_date($recent["post_date"]);
-								//$ss_post_date2 = get_the_date($ss_post_date, 'y');
-		
-								echo '<li><a href="' . get_permalink($recent["ID"]) . '">' .   $recent["post_title"].'</a></li> ';
-							}
-							
-						wp_reset_query();
-						echo "</ul></div>";
-						// End recent posts section
-							
-						// Display Upcoming Events
-						$upcoming = get_field('upcoming'); 
-							
-						if ( $upcoming ) 
-							{ 
-							echo '<div class="sidebar-header-section"><h2 class="title">Upcoming Events</h2><div class="textwidget">' . $upcoming . '</div></div>'; }
+							$recent_posts = get_field('recent_posts'); 
+							$upcoming = get_field('upcoming'); 
+							if ( $recent_posts) { echo '<div class="sidebar-header-section"><h2 class="title">Recent Posts</h2><div class="textwidget">' . $recent_posts . '</div></div>'; }
+							if ( $upcoming ) { echo '<div class="sidebar-header-section"><h2 class="title">Upcoming</h2><div class="textwidget">' . $upcoming . '</div></div>'; }
 							} 
 						?>
 					</div>
