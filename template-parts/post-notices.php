@@ -20,13 +20,33 @@ $table_title = "Important Notice";
 $previous_type = NULL;
 
 // if user can read private posts query all posts with a document location that matches the current page id and is private
-if ( current_user_can('read_private_posts') )
+
+if ( $current_role == 'council')
 	{
 	$args = array(
 		'post_type' => 'post',
 		'post_status' => 'publish',
 		'meta_key' => 'document_type',
 		'meta_value' => $table_title,
+		'orderby' => 'document_type date title',
+		'order' => 'DESC',
+		'date_query' => array(
+		        'after' => date('Y-m-d', strtotime("-1 month +1 day") ) )
+		);
+	}
+
+elseif ( current_user_can('read_private_posts') && $current_role != 'council')
+	{
+	$args = array(
+		'post_type' => 'post',
+		'post_status' => 'publish',
+		'meta_key' => 'document_type',
+		'meta_value' => $table_title,
+        'meta_query'	  => array(
+            'key'		  => 'document_privacy_council',
+			'value'		=> '',
+			'compare'	=> '='
+                ),
 		'orderby' => 'document_type date title',
 		'order' => 'DESC',
 		'date_query' => array(
@@ -89,7 +109,7 @@ if ( $document_posts )
 			<tr><td colspan="4"><h2><?php echo $table_title . 's'; ?></h2></td></tr>
 			<tr style="background-color: #000; color: #fff">
 				<?php
-				// determin how many columns to include in the table
+				// determine how many columns to include in the table
 				if ( $doc_word == 'yes' && $doc_xls == 'yes') { $col = 5; }
 				elseif (( $doc_word == 'yes' && $doc_xls != 'yes' ) || ( $doc_word != 'yes' && $doc_xls == 'yes')) { $col = 4; }
 				else { $col = 3; } 
