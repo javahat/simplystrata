@@ -20,33 +20,13 @@ $table_title = "Important Notice";
 $previous_type = NULL;
 
 // if user can read private posts query all posts with a document location that matches the current page id and is private
-
-if ( $current_role == 'council')
+if ( current_user_can('read_private_posts') )
 	{
 	$args = array(
 		'post_type' => 'post',
 		'post_status' => 'publish',
 		'meta_key' => 'document_type',
 		'meta_value' => $table_title,
-		'orderby' => 'document_type date title',
-		'order' => 'DESC',
-		'date_query' => array(
-		        'after' => date('Y-m-d', strtotime("-1 month +1 day") ) )
-		);
-	}
-
-elseif ( current_user_can('read_private_posts') && $current_role != 'council')
-	{
-	$args = array(
-		'post_type' => 'post',
-		'post_status' => 'publish',
-		'meta_key' => 'document_type',
-		'meta_value' => $table_title,
-        'meta_query'	  => array(
-            'key'		  => 'document_privacy_council',
-			'value'		=> '',
-			'compare'	=> '='
-                ),
 		'orderby' => 'document_type date title',
 		'order' => 'DESC',
 		'date_query' => array(
