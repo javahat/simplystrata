@@ -38,8 +38,24 @@
 			<i class="fa left fa-user-circle-o aria-hidden='true'">
 			
 				<?php 
-				//if user is logged in
-				if ( is_user_logged_in() )			 
+				//if user is logged in to current blog
+				$current_user = get_current_user_id();
+				$current_blog = get_current_blog_id();
+				
+				//if user is not logged in to this blog
+				if ( !is_user_logged_in() )
+					{
+					echo 'You must <a href="' . home_url() . '">log in</a> to view private information. ';
+					}
+				
+				elseif ( !is_user_member_of_blog($current_user, $current_blog) )
+					{
+					wp_logout();
+					echo 'You must <a href="' . home_url() . '">log in</a> with a valid username and password. ';
+					}
+								
+				elseif ( is_user_member_of_blog($current_user, $current_blog) )
+				//if ( is_user_logged_in() && )			 
 					{
 					global $wp_roles;
 					$current_user = wp_get_current_user();
@@ -53,19 +69,16 @@
 					//Detect whether user is a unit number or not and display message
 					if ($current_role == 'Owners') { echo 'Hello ' . $current_name; }
 					elseif (!preg_match("/[0-9]/i", $current_unit)) { 
-					echo 'Hello ' . $current_name . '. You are logged in as ' . $current_role . '. '; }
+						echo 'Hello ' . $current_name . '. You are logged in as ' . $current_role . '. '; }
 					else { echo 'Hello ' . $current_name . ' (' . $current_role . ' from unit ' . $current_unit . ') '; }
 					
-					if ($current_role == 'Owner') { echo '<a href="' . get_edit_user_link() . '">Update Profile</a> '; }
+					//if ($current_role == 'Owner') { echo '<a href="' . get_edit_user_link() . '">Update Profile</a> '; }
 					
-					}
-						
-				//if user is not logged in
-				else { echo 'You must <a href="' . home_url() . '">log in</a> to view private information. '; }
+					edit_post_link(' Edit this page');
+					//echo ' | <a href="' . wp_logout_url(get_permalink()) . '">Logout »</a>';
 				
-				edit_post_link(' Edit Content'); 
-				
-				if ( is_user_logged_in() ) { echo ' | <a href="' . wp_logout_url(get_permalink()) . '">Logout »</a>'; }?>
+				}
+				?>
 			</i>
 			
 			<!-- display icon with date on right -->
